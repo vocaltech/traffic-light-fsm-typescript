@@ -1,0 +1,14 @@
+@startuml trafficlight-state-diagram
+'scale 350 width
+
+[*] --> Red
+Red <-- Red : wait
+Red ---> Green : red_timer_expires
+
+Amber <-- Amber : wait
+Amber --> Red : amber_timer_expires
+Amber <-- Green : green_timer_expires
+
+Green <-- Green : wait
+
+@enduml
