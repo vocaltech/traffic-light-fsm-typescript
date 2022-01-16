@@ -10,7 +10,12 @@ export enum TrafficLightEvent {
     TIMER_EXPIRES = 'TIMER_EXPIRES'
 }
 
-export const next = (state: TrafficLightState): TrafficLightState => {
+export type Payload = {
+    state: TrafficLightState,
+    event?: TrafficLightEvent
+}
+
+export const next1 = (state: TrafficLightState): TrafficLightState => {
     switch(state) {
         case TrafficLightState.RED: 
             return TrafficLightState.GREEN
@@ -25,6 +30,24 @@ export const next = (state: TrafficLightState): TrafficLightState => {
     }
 }
 
+export const next2 = (payload: Payload): TrafficLightState => {
+    switch(payload.state) {
+        case TrafficLightState.RED: 
+            return (payload.event === TrafficLightEvent.TIMER_EXPIRES ? TrafficLightState.GREEN: TrafficLightState.RED)
+
+        case TrafficLightState.AMBER:
+            return (payload.event === TrafficLightEvent.TIMER_EXPIRES ? TrafficLightState.RED: TrafficLightState.AMBER)
+
+        case TrafficLightState.GREEN:
+            return (payload.event === TrafficLightEvent.TIMER_EXPIRES ? TrafficLightState.AMBER: TrafficLightState.GREEN)
+
+        default: return TrafficLightState.RED
+    }
+}
+
+//
+// TODO: write test unit
+//
 export const TrafficLightFsm = {
     initialState: TrafficLightState.RED,
     states: {
