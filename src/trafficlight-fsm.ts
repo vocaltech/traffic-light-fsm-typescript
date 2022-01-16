@@ -7,6 +7,7 @@ export enum TrafficLightState {
 
 // enum which represents the triggers/transition events
 export enum TrafficLightEvent {
+    WAIT = 'WAIT',
     TIMER_EXPIRES = 'TIMER_EXPIRES'
 }
 
@@ -45,14 +46,21 @@ export const next2 = (payload: Payload): TrafficLightState => {
     }
 }
 
-//
-// TODO: write test unit
-//
-export const TrafficLightFsm = {
+export const TrafficLightFsmMap = {
     initialState: TrafficLightState.RED,
     states: {
-        [TrafficLightState.RED]: TrafficLightState.GREEN,
-        [TrafficLightState.AMBER]: TrafficLightState.RED,
-        [TrafficLightState.GREEN]: TrafficLightState.AMBER
+        [TrafficLightState.RED]: {
+            [TrafficLightEvent.WAIT]: TrafficLightState.RED,
+            [TrafficLightEvent.TIMER_EXPIRES]: TrafficLightState.GREEN
+        },
+        [TrafficLightState.AMBER]: {
+            [TrafficLightEvent.WAIT]: TrafficLightState.AMBER,
+            [TrafficLightEvent.TIMER_EXPIRES]: TrafficLightState.RED
+        },
+        [TrafficLightState.GREEN]: {
+            [TrafficLightEvent.WAIT]: TrafficLightState.GREEN,
+            [TrafficLightEvent.TIMER_EXPIRES]: TrafficLightState.AMBER
+        }
     }
 }
+
