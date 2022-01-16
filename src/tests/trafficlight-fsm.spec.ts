@@ -1,7 +1,7 @@
-import { TrafficLightState, TrafficLightEvent, Payload, next1, next2 } from '../trafficlight-fsm'
+import { TrafficLightState, TrafficLightEvent, Payload, next1, next2, TrafficLightFsmMap } from '../trafficlight-fsm'
 
 
-describe('Traffic light tests with next1', () => {
+describe.skip('Traffic light tests with next1', () => {
     it(' should return GREEN state', () => {
         expect(next1(TrafficLightState.RED)).toBe(TrafficLightState.GREEN)
     })  
@@ -15,7 +15,7 @@ describe('Traffic light tests with next1', () => {
     })  
 })
 
-describe('Traffic light tests with next2', () => {
+describe.skip('Traffic light tests with next2', () => {
     it(' should return RED state before timer_expires', () => {
         const payload: Payload = {
             state: TrafficLightState.RED
@@ -67,4 +67,31 @@ describe('Traffic light tests with next2', () => {
         expect(next2(payload)).toBe(TrafficLightState.AMBER)
     })
 })
+
+describe('TrafficLightFsmMap tests', () => {
+    it(' should return RED state before timer_expires', () => {
+        expect(TrafficLightFsmMap.states.RED.WAIT).toBe(TrafficLightState.RED)
+    })
+    
+    it(' should return GREEN state after timer_expires', () => {
+        expect(TrafficLightFsmMap.states.RED.TIMER_EXPIRES).toBe(TrafficLightState.GREEN)
+    })
+
+    it(' should return AMBER before timer_expires', () => {
+        expect(TrafficLightFsmMap.states.AMBER.WAIT).toBe(TrafficLightState.AMBER)
+    })
+
+    it(' should return RED after timer_expires', () => {
+        expect(TrafficLightFsmMap.states.AMBER.TIMER_EXPIRES).toBe(TrafficLightState.RED)
+    })
+
+    it(' should return GREEN before timer_expires', () => {
+        expect(TrafficLightFsmMap.states.GREEN.WAIT).toBe(TrafficLightState.GREEN)
+    })
+
+    it(' should return AMBER after timer_expires', () => {
+        expect(TrafficLightFsmMap.states.GREEN.TIMER_EXPIRES).toBe(TrafficLightState.AMBER)
+    })
+})
+
 
