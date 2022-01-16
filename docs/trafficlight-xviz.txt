@@ -1,0 +1,22 @@
+const trafficLightMachine = Machine({
+    id: 'tlm',
+    initial: 'RED',
+    states: {
+      RED: {
+        on: {
+          TIMER_EXPIRES: 'GREEN'
+        }
+      },
+      GREEN: {
+        on: {
+          TIMER_EXPIRES: 'AMBER'
+        }
+      },
+      AMBER: {
+        on: {
+          TIMER_EXPIRES: 'RED'
+        }
+      }
+    }
+  });
+    
